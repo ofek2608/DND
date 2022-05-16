@@ -1,0 +1,46 @@
+{
+	"weight": 1,
+	"actions": [[
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "amethyst"]}
+		},
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "ruby"]}
+		},
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "sapphire"]}
+		},
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "topaz"]}
+		},
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "emerald"]}
+		}
+	], [
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "steak"]}
+		},
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "bacon"]}
+		},
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "omelette"]}
+		},
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "chicken"]}
+		},
+		{
+			"style": "primary",
+			"outcome": {"items": [1, "pizza"]}
+		}
+	]]
+}

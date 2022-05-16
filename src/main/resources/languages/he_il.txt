@@ -1,0 +1,8 @@
+test
+  language
+    features: חחח
+    rand:
+      1: פחות נפוץ
+      2: יותר נפוץ
+      0.1: נדיר
+  hey: שלום
