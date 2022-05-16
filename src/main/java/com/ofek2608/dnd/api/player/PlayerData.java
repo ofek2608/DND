@@ -1,8 +1,10 @@
 package com.ofek2608.dnd.api.player;
 
+import com.ofek2608.dnd.api.Savable;
+
 import javax.annotation.Nullable;
 
-public interface PlayerData {
+public interface PlayerData extends Savable {
 	Inventory getInventory();
 	Inventory getBackpack();
 	PlayerHealth getHealth();
