@@ -1,10 +1,6 @@
 package com.ofek2608.dnd.impl.adventure;
 
-import com.ofek2608.dnd.api.Player;
 import com.ofek2608.dnd.api.adventure.AdventureEventOutcome;
-import net.dv8tion.jda.api.EmbedBuilder;
-
-import java.util.Random;
 
 public abstract class AdventureEventOutcomeBase implements AdventureEventOutcome {
 	protected final String id;
