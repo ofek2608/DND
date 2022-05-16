@@ -2,6 +2,7 @@ package com.ofek2608.dnd.bot;
 
 import com.ofek2608.dnd.api.Player;
 import com.ofek2608.dnd.impl.PlayerImpl;
+import com.ofek2608.dnd.resources.ResourcesReader;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -19,7 +20,7 @@ public final class DNDBot {
 	private DNDBot() {}
 	public static void loadClass() {}
 
-	public static final String TOKEN = "";
+	public static final String TOKEN = ResourcesReader.getString("token.txt");
 	public static final JDA BOT = build();
 
 
