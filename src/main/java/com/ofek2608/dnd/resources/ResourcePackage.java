@@ -8,7 +8,7 @@ import com.ofek2608.dnd.api.adventure.AdventureOutcome;
 import com.ofek2608.dnd.api.adventure.AdventureRegion;
 import com.ofek2608.dnd.api.item.Item;
 import com.ofek2608.dnd.api.item.ItemCategory;
-import com.ofek2608.dnd.api.item.Roll;
+import com.ofek2608.dnd.api.Roll;
 import com.ofek2608.dnd.impl.CostImpl;
 import com.ofek2608.dnd.impl.item.ItemCategoryImpl;
 import com.ofek2608.dnd.impl.item.ItemImpl;
@@ -362,10 +362,11 @@ public final class ResourcePackage {
 		if (!(map.get("category") instanceof String category)) return null;
 		if (!(map.get("icon") instanceof String icon)) return null;
 		Roll attack = RollImpl.parseString(map.get("attack"));
+		float protection = map.get("protection") instanceof Number n ? n.floatValue() : 0;
 		float heal = map.get("heal") instanceof Number n ? n.floatValue() : 0;
 
 
-		return new ItemImpl(name, "item_category." + category, icon, attack, heal);
+		return new ItemImpl(name, "item_category." + category, icon, attack, protection, heal);
 	}
 
 

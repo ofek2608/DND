@@ -1,6 +1,6 @@
 package com.ofek2608.dnd.impl.item;
 
-import com.ofek2608.dnd.api.item.Roll;
+import com.ofek2608.dnd.api.Roll;
 
 import javax.annotation.Nullable;
 import java.util.Random;

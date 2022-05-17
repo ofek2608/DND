@@ -1,4 +1,4 @@
-package com.ofek2608.dnd.api.item;
+package com.ofek2608.dnd.api;
 
 import java.util.Random;
 
