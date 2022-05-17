@@ -1,8 +1,11 @@
 package com.ofek2608.dnd.api.player;
 
-public interface PlayerHealth {
+import com.ofek2608.dnd.api.Savable;
+
+public interface PlayerHealth extends Savable {
 	int REVIVE_TIME = 5000;//21600000
 	float getHealth();
+	void setHealth(float health);
 	void damage(float value);
 	void kill();
 	long getLastDeath();

@@ -1,10 +1,11 @@
 package com.ofek2608.dnd.api.player;
 
+import com.ofek2608.dnd.api.Savable;
 import com.ofek2608.dnd.api.item.Item;
 
 import java.util.Set;
 
-public interface Inventory {
+public interface Inventory extends Savable {
 	long getMoney();
 	void setMoney(long money);
 	int getItem(String item);

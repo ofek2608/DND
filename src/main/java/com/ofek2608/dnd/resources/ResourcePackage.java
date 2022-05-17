@@ -3,8 +3,8 @@ package com.ofek2608.dnd.resources;
 import com.ofek2608.dnd.api.Cost;
 import com.ofek2608.dnd.api.Identifiable;
 import com.ofek2608.dnd.api.adventure.AdventureEvent;
-import com.ofek2608.dnd.api.adventure.AdventureEventAction;
-import com.ofek2608.dnd.api.adventure.AdventureEventOutcome;
+import com.ofek2608.dnd.api.adventure.AdventureAction;
+import com.ofek2608.dnd.api.adventure.AdventureOutcome;
 import com.ofek2608.dnd.api.adventure.AdventureRegion;
 import com.ofek2608.dnd.api.item.Item;
 import com.ofek2608.dnd.api.item.ItemCategory;
@@ -214,16 +214,16 @@ public final class ResourcePackage {
 
 		int index = 0;
 		int rowCount = eventJsonList.size();
-		AdventureEventAction[][] actionsTable = new AdventureEventAction[rowCount][];
+		AdventureAction[][] actionsTable = new AdventureAction[rowCount][];
 		for (int row = 0; row < rowCount; row++) {
 			Object rowJson = eventJsonList.get(row);
 			if (!(rowJson instanceof List<?> rowJsonList))
 				return null;
 
 			int colCount = rowJsonList.size();
-			AdventureEventAction[] rowActions = new AdventureEventAction[colCount];
+			AdventureAction[] rowActions = new AdventureAction[colCount];
 			for (int col = 0; col < colCount; col++) {
-				AdventureEventAction action = parseEventAction(id + "." + index, region, rowJsonList.get(col));
+				AdventureAction action = parseEventAction(id + "." + index, region, rowJsonList.get(col));
 				index++;
 				if (action == null)
 					return null;
@@ -239,23 +239,24 @@ public final class ResourcePackage {
 		return event;
 	}
 
-	private AdventureEventAction parseEventAction(String id, String inRegion, Object json) {
+	private AdventureAction parseEventAction(String id, String inRegion, Object json) {
 		if (!(json instanceof Map<?,?> jsonMap))
 			return null;
 
 		boolean hidden = jsonMap.get("hidden") instanceof Boolean b ? b : false;
 		Cost cost = parseCost(jsonMap.get("cost"));
+		Cost ticket = parseCost(jsonMap.get("ticket"));
 		ButtonStyle style = parseButtonStyle(jsonMap.get("style"));
 
 		Object outcomesJson = jsonMap.get("outcome");
-		Weight<AdventureEventOutcome> outcomesWeights;
+		Weight<AdventureOutcome> outcomesWeights;
 
 		if (outcomesJson instanceof Map<?,?> outcomesJsonMap) {
-			AdventureEventOutcome outcome = parseEventOutcome(id + ".0", inRegion, outcomesJsonMap);
-			outcomesWeights = new Weight<>(new AdventureEventOutcome[] {outcome}, new float[]{1});
+			AdventureOutcome outcome = parseEventOutcome(id + ".0", inRegion, outcomesJsonMap);
+			outcomesWeights = new Weight<>(new AdventureOutcome[] {outcome}, new float[]{1});
 		} else if (outcomesJson instanceof List<?> outcomesJsonList) {
 			int size = outcomesJsonList.size();
-			AdventureEventOutcome[] outcomes = new AdventureEventOutcome[size];
+			AdventureOutcome[] outcomes = new AdventureOutcome[size];
 			float[] weights = new float[size];
 
 			for (int i = 0; i < size; i++) {
@@ -277,12 +278,12 @@ public final class ResourcePackage {
 
 
 
-		AdventureEventAction action = new AdventureEventActionImpl(id, hidden, cost, style, outcomesWeights);
+		AdventureAction action = new AdventureActionImpl(id, hidden, cost, ticket, style, outcomesWeights);
 		identifiables.put(action.getId(), action);
 		return action;
 	}
 
-	private AdventureEventOutcome parseEventOutcome(String id, String inRegion, Map<?, ?> json) {
+	private AdventureOutcome parseEventOutcome(String id, String inRegion, Map<?, ?> json) {
 		float   moneyMean = json.get("money"   ) instanceof Number  n ? n.floatValue() : 0.0f;
 		float   moneyStd  = json.get("moneyStd") instanceof Number  n ? n.floatValue() : 0.0f;
 		boolean die       = json.get("die"     ) instanceof Boolean b ? b              : false;
@@ -290,11 +291,11 @@ public final class ResourcePackage {
 		ItemList items = ItemList.parseItemList(json.get("items"));
 		if (items == null) items = ItemList.EMPTY;
 
-		AdventureEventOutcome outcome;
+		AdventureOutcome outcome;
 		if (die) {
-			outcome = new AdventureEventOutcomeDie(id);
+			outcome = new AdventureOutcomeDie(id);
 		} else {
-			outcome = new AdventureEventOutcomeReward(id, moneyMean, moneyStd, "region." + region, items);
+			outcome = new AdventureOutcomeReward(id, moneyMean, moneyStd, "region." + region, items);
 		}
 
 		identifiables.put(outcome.getId(), outcome);
@@ -308,14 +309,11 @@ public final class ResourcePackage {
 
 		long money = costMap.get("money") instanceof Number n ? Math.max(n.longValue(),0) : 0;
 		ItemList items = ItemList.parseItemList(costMap.get("items"));
-		ItemList tickets = ItemList.parseItemList(costMap.get("tickets"));
 
 		if (items == null)
 			items = ItemList.EMPTY;
-		if (tickets == null)
-			tickets = ItemList.EMPTY;
 
-		return new CostImpl(money, items, tickets);
+		return new CostImpl(money, items);
 	}
 
 	private static ButtonStyle parseButtonStyle(Object style) {

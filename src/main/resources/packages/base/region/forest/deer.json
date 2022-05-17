@@ -17,7 +17,7 @@
 		{
 			"style": "danger",
 			"outcome": {},
-			"cost": {"tickets": [2, "deer"]},
+			"ticket": {"items": [2, "deer"]},
 			"hidden": true
 		}
 	]]

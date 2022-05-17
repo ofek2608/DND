@@ -1,9 +1,10 @@
 package com.ofek2608.dnd.impl;
 
-import com.ofek2608.dnd.api.Lang;
-import com.ofek2608.dnd.api.Player;
-import com.ofek2608.dnd.api.PlayerViewable;
 import com.ofek2608.dnd.api.item.Item;
+import com.ofek2608.dnd.api.player.Inventory;
+import com.ofek2608.dnd.api.player.PlayerMessage;
+import com.ofek2608.dnd.api.player.Player;
+import com.ofek2608.dnd.api.player.PlayerView;
 import com.ofek2608.dnd.resources.Resources;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -11,10 +12,12 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
-public class InventoryView implements PlayerViewable {
+public class InventoryView implements PlayerView {
 	public static final InventoryView INSTANCE = new InventoryView();
 	private InventoryView() {}
 
@@ -24,19 +27,20 @@ public class InventoryView implements PlayerViewable {
 	}
 
 	@Override
-	public void buildEmbed(Player player, EmbedBuilder builder) {
-		Random r = new Random();
-		Lang lang = player.getLanguage();
+	public void buildEmbed(Context context, EmbedBuilder builder) {
+		Player player = context.player;
+		PlayerMessage playerMessage = player.getMessage();
 
 		PlayerStats stats = new PlayerStats(player);
+
 		if (stats.categories.length == 0) {
-			builder.appendDescription(lang.get("description.inventory.empty", r));
-			player.setViewData("");
+			builder.appendDescription(context.t("description.inventory.empty"));
+			playerMessage.setViewDataNoUpdate("");
 			return;
 		}
 
 		@Nullable
-		Data data = Data.fromString(player.getViewData());
+		Data data = Data.fromString(playerMessage.getViewData());
 		if (data == null)
 			data = new Data(stats.categories[0], 0, false);
 
@@ -47,19 +51,22 @@ public class InventoryView implements PlayerViewable {
 		Item[] items = stats.itemsByCategory[categoryIndex];
 
 
+		Inventory playerInv = player.getData().getInventory();
+		Inventory playerBack = player.getData().getBackpack();
+
 		if (data.detailed) {
 			data.page = Math.min(data.page, items.length - 1);
 
 			Item item = items[data.page];
-			int count = player.getItemCount(item);
-			int backpackCount = player.getBackpackItemCount(item);
+			int count = playerInv.getItem(item);
+			int backpackCount = playerBack.getItem(item);
 
-			builder.appendDescription(item.getIcon() + " " + lang.get(item.getId(), r) + ": " + count);
+			builder.appendDescription(item.getIcon() + " " + context.t(item.getId()) + ": " + count);
 			if (backpackCount > 0)
 				builder.appendDescription(" [(+" + backpackCount + ")](https://www.google.com)");
 			builder.appendDescription("\n");
 
-			builder.appendDescription(lang.get(item.getId() + ".description", r));
+			builder.appendDescription(context.t(item.getId() + ".description"));
 		} else {
 			data.page = Math.min(data.page, (items.length + 9) / 10);
 			int off = data.page * 10;
@@ -68,33 +75,30 @@ public class InventoryView implements PlayerViewable {
 					break;
 
 				Item item = items[off + i];
-				int count = player.getItemCount(item);
-				int backpackCount = player.getBackpackItemCount(item);
+				int count = playerInv.getItem(item);
+				int backpackCount = playerBack.getItem(item);
 
-				builder.appendDescription(item.getIcon() + " " + lang.get(item.getId(), r) + ": " + count);
+				builder.appendDescription(item.getIcon() + " " + context.t(item.getId()) + ": " + count);
 				if (backpackCount > 0)
 					builder.appendDescription(" [(+" + backpackCount + ")](https://www.google.com)");
 				builder.appendDescription("\n");
 			}
 		}
 
-		player.setViewData(data.toString());
+		playerMessage.setViewDataNoUpdate(data.toString());
 	}
 
 	@Override
-	public ActionRow[] createActionRows(Player player) {
-		Random r = new Random();
-		Lang lang = player.getLanguage();
-
-		ActionRow menuActionRow = ActionRow.of(Button.secondary("menu", lang.get("button.back_to_menu", r)));
+	public ActionRow[] createActionRows(Context context) {
+		ActionRow menuActionRow = ActionRow.of(Button.secondary("menu", context.t("button.back_to_menu")));
 
 		//when this function is called, buildEmbed had already been called, so no need to worry about illegal data
 		@Nullable
-		Data data = Data.fromString(player.getViewData());
+		Data data = Data.fromString(context.player.getMessage().getViewData());
 		if (data == null)
 			return new ActionRow[] {menuActionRow};
 
-		PlayerStats stats = new PlayerStats(player);
+		PlayerStats stats = new PlayerStats(context.player);
 		int categoryIndex = data.getCategoryOfStats(stats);
 		Item[] items = stats.itemsByCategory[categoryIndex];
 
@@ -112,7 +116,7 @@ public class InventoryView implements PlayerViewable {
 		{
 			SelectMenu.Builder builder = SelectMenu.create("category");
 			for (String category : stats.categories)
-				builder.addOption(lang.get(category, r), category, lang.get(category + ".description", r));
+				builder.addOption(context.t(category), category, context.t(category + ".description"));
 			builder.setDefaultOptions(Collections.singletonList(builder.getOptions().get(categoryIndex)));
 			categoryActionRow = ActionRow.of(builder.build());
 		}
@@ -136,13 +140,16 @@ public class InventoryView implements PlayerViewable {
 	}
 
 	@Override
-	public void onClick(Player player, String id) {
-		if (id.equals("menu"))
-			player.setView(MenuView.INSTANCE);
+	public void onClick(Context context, String id) {
+		if (id.equals("menu")) {
+			context.player.openMenu();
+			return;
+		}
 
+		PlayerMessage playerMessage = context.player.getMessage();
 		//when this function is called, buildEmbed had already been called, so no need to worry about illegal data
 		@Nullable
-		Data data = Data.fromString(player.getViewData());
+		Data data = Data.fromString(playerMessage.getViewData());
 		if (data == null)
 			return;
 
@@ -164,21 +171,20 @@ public class InventoryView implements PlayerViewable {
 				return;
 			}
 		}
-		player.setViewData(data.toString());
-		player.updateView();
+		playerMessage.setViewData(data.toString());
 	}
 
 	@Override
-	public void onSelection(Player player, String id, List<String> values) {
+	public void onSelection(Context context, String id, List<String> values) {
 		if (values.size() == 0)
 			return;
+		PlayerMessage playerMessage = context.player.getMessage();
 		@Nullable
-		Data data = Data.fromString(player.getViewData());
+		Data data = Data.fromString(playerMessage.getViewData());
 		if (data == null)
 			return;
 		data.category = values.get(0);
-		player.setViewData(data.toString());
-		player.updateView();
+		playerMessage.setViewData(data.toString());
 	}
 
 	private static class Data {
@@ -225,7 +231,11 @@ public class InventoryView implements PlayerViewable {
 		private final Item[][] itemsByCategory;
 
 		public PlayerStats(Player player) {
-			Item[] items = Stream.of(player.getItems())
+			Item[] items = player
+					.getData()
+					.getBothInventories()
+					.getItems()
+					.stream()
 					.sorted()
 					.map(Resources::get)
 					.map(o->o instanceof Item i ? i : null)

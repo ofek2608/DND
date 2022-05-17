@@ -1,6 +1,6 @@
 package com.ofek2608.dnd.impl;
 
-import com.ofek2608.dnd.api.Player;
+import com.ofek2608.dnd.api.player.Inventory;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -18,40 +18,40 @@ public final class ItemList {
 		this.counts = counts;
 	}
 
-	public boolean has(Player player) {
-		return hasTimes(player, 1);
+	public boolean has(Inventory inventory) {
+		return hasTimes(inventory, 1);
 	}
 
-	public boolean hasTimes(Player player, int times) {
+	public boolean hasTimes(Inventory inventory, int times) {
 		int length = this.length;
 		String[] names = this.names;
 		int[] counts = this.counts;
 
 		for (int i = 0; i < length; i++)
-			if (player.getTotalItemCount(names[i]) < times * counts[i])
+			if (inventory.getItem(names[i]) < times * counts[i])
 				return false;
 		return true;
 	}
 
-	public void addTimes(Player player, int times) {
+	public void addTimes(Inventory inventory, int times) {
 		int length = this.length;
 		String[] names = this.names;
 		int[] counts = this.counts;
 
 		for (int i = 0; i < length; i++)
-			player.addItem(names[i], times * counts[i]);
+			inventory.addItem(names[i], times * counts[i]);
 	}
 
-	public void add(Player player) {
-		addTimes(player, 1);
+	public void add(Inventory inventory) {
+		addTimes(inventory, 1);
 	}
 
-	public void removeTimes(Player player, int times) {
-		addTimes(player, -times);
+	public void removeTimes(Inventory inventory, int times) {
+		addTimes(inventory, -times);
 	}
 
-	public void remove(Player player) {
-		addTimes(player, -1);
+	public void remove(Inventory inventory) {
+		addTimes(inventory, -1);
 	}
 
 

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 public interface PlayerData extends Savable {
 	Inventory getInventory();
 	Inventory getBackpack();
+	Inventory getBothInventories();
 	PlayerHealth getHealth();
 
 	void setRegion(@Nullable String region);

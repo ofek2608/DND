@@ -1,6 +1,8 @@
 package com.ofek2608.dnd.resources;
 
 import com.ofek2608.dnd.api.Identifiable;
+import com.ofek2608.dnd.api.Lang;
+import com.ofek2608.dnd.api.player.PlayerView;
 import com.ofek2608.dnd.impl.LangImpl;
 
 import java.util.HashMap;
@@ -33,5 +35,24 @@ public final class Resources {
 	public static void register(Identifiable ... objects) {
 		for (Identifiable object : objects)
 			IDENTIFIABLES.put(object.getId(), object);
+	}
+
+
+
+
+
+
+
+
+	public static Lang getDefaultLanguage() {
+		if (Resources.get("lang.en_us") instanceof Lang result)
+			return result;
+		throw new RuntimeException("Couldn't find language 'lang.en_us'");
+	}
+
+	public static PlayerView getDefaultView() {
+		if (Resources.get("view.menu") instanceof PlayerView result)
+			return result;
+		throw new RuntimeException("Couldn't find view 'view.menu'");
 	}
 }

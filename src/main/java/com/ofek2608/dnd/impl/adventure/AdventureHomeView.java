@@ -1,17 +1,15 @@
 package com.ofek2608.dnd.impl.adventure;
 
-import com.ofek2608.dnd.api.Lang;
-import com.ofek2608.dnd.api.Player;
-import com.ofek2608.dnd.api.PlayerViewable;
-import com.ofek2608.dnd.impl.MenuView;
+import com.ofek2608.dnd.api.player.PlayerHealth;
+import com.ofek2608.dnd.api.player.Player;
+import com.ofek2608.dnd.api.player.PlayerView;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
-public class AdventureHomeView implements PlayerViewable {
+public class AdventureHomeView implements PlayerView {
 	public static final AdventureHomeView INSTANCE = new AdventureHomeView();
 	private AdventureHomeView() {}
 
@@ -21,45 +19,42 @@ public class AdventureHomeView implements PlayerViewable {
 	}
 
 	@Override
-	public void buildEmbed(Player player, EmbedBuilder builder) {
-		Random r = new Random();
-		builder.appendDescription(player.getLanguage().get(
-				player.isAlive() ?
+	public void buildEmbed(Context context, EmbedBuilder builder) {
+		PlayerHealth health = context.player.getData().getHealth();
+		builder.appendDescription(context.t(
+				health.isAlive() ?
 						"description.adventure.home.alive" :
-						"description.adventure.home.dead",
-				r
-		).replaceAll("%t", "<t:" + player.getReviveTime() / 1000 + ":R>"));
+						"description.adventure.home.dead"
+		).replaceAll("%t", "<t:" + health.getReviveTime() / 1000 + ":R>"));
 	}
 
 	@Override
-	public ActionRow[] createActionRows(Player player) {
-		Random r = new Random();
-		Lang lang = player.getLanguage();
-
-		if (player.isAlive()) {
+	public ActionRow[] createActionRows(Context context) {
+		if (context.player.getData().getHealth().isAlive()) {
 			return new ActionRow[] {
 					ActionRow.of(
-							Button.secondary("forest", lang.get("region.forest", r)),
-							Button.secondary("gifts", lang.get("region.gifts", r)),
-							Button.secondary("forest2", lang.get("region.forest", r)),
-							Button.secondary("forest3", lang.get("region.forest", r))
+							Button.secondary("forest", context.t("region.forest")),
+							Button.secondary("gifts", context.t("region.gifts")),
+							Button.secondary("forest2", context.t("region.forest")),
+							Button.secondary("forest3", context.t("region.forest"))
 					),
-					ActionRow.of(Button.secondary("menu", lang.get("button.back_to_menu", r)))
+					ActionRow.of(Button.secondary("menu", context.t("button.back_to_menu")))
 			};
 		} else {
 			return new ActionRow[] {
-					ActionRow.of(Button.secondary("menu", lang.get("button.back_to_menu", r)))
+					ActionRow.of(Button.secondary("menu", context.t("button.back_to_menu")))
 			};
 		}
 	}
 
 	@Override
-	public void onClick(Player player, String id) {
+	public void onClick(Context context, String id) {
+		Player player = context.player;
 		if (id.equals("menu")) {
-			player.setView(MenuView.INSTANCE);
+			player.openMenu();
 			return;
 		}
-		if (!player.isAlive())
+		if (!player.getData().getHealth().isAlive())
 			return;
 		@Nullable
 		String regionId = switch (id) {
@@ -69,7 +64,7 @@ public class AdventureHomeView implements PlayerViewable {
 		};
 		if (regionId == null)
 			return;
-		player.setRegion(regionId);
+		player.getData().setRegion(regionId);
 		player.continueAdventure();
 	}
 }

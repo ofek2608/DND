@@ -1,7 +1,9 @@
 package com.ofek2608.dnd.bot;
 
-import com.ofek2608.dnd.api.Player;
-import net.dv8tion.jda.api.entities.Message;
+import com.ofek2608.dnd.api.player.PlayerMessage;
+import com.ofek2608.dnd.api.player.Player;
+import com.ofek2608.dnd.api.player.PlayerView;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
@@ -15,6 +17,9 @@ public final class DNDBotListener extends ListenerAdapter {
 		User author = event.getAuthor();
 		if (author.isBot())
 			return;
+
+		if (!(event.getChannel() instanceof TextChannel channel))
+			return;//must be inside a guild
 
 		String msg = event.getMessage().getContentRaw();
 		msg = msg.replaceAll("^ *", "");
@@ -30,8 +35,7 @@ public final class DNDBotListener extends ListenerAdapter {
 		msg = msg.replaceAll("^ *| *$", "");
 		System.out.println("/" + msg);
 
-		Player player = Player.getPlayer(author);
-		player.sendMessage(event.getChannel());
+		Player.getPlayer(author).getMessage().sendMessage(channel);
 	}
 
 
@@ -39,31 +43,31 @@ public final class DNDBotListener extends ListenerAdapter {
 	public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
 		User user = event.getUser();
 		Player player = Player.getPlayer(user);
-		Message message = event.getMessage();
+		PlayerMessage playerMessage = player.getMessage();
 
-		if (!message.equals(player.getMessage()))
+		if (playerMessage.getMessageId() != event.getMessage().getIdLong())
 			return;
 
 		event.deferEdit().queue();
 
 		String id = event.getButton().getId();
 		if (id != null)
-			player.getView().onClick(player, id);
+			playerMessage.getView().onClick(new PlayerView.Context(player), id);
 	}
 
 	@Override
 	public void onSelectMenuInteraction(@NotNull SelectMenuInteractionEvent event) {
 		User user = event.getUser();
 		Player player = Player.getPlayer(user);
-		Message message = event.getMessage();
+		PlayerMessage playerMessage = player.getMessage();
 
-		if (!message.equals(player.getMessage()))
+		if (playerMessage.getMessageId() != event.getMessage().getIdLong())
 			return;
 
 		event.deferEdit().queue();
 
 		String id = event.getComponent().getId();
 		if (id != null)
-			player.getView().onSelection(player, id, event.getValues());
+			playerMessage.getView().onSelection(new PlayerView.Context(player), id, event.getValues());
 	}
 }
