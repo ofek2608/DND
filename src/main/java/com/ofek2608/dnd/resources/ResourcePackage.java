@@ -70,6 +70,11 @@ public final class ResourcePackage {
 		parseItemCategories();
 	}
 
+	private void register(Identifiable ... identifiables) {
+		for (Identifiable identifiable : identifiables)
+			this.identifiables.put(identifiable.getId(), identifiable);
+	}
+
 
 	//==================
 	// Language Parsing
@@ -202,7 +207,7 @@ public final class ResourcePackage {
 		);
 
 		AdventureRegion parsed = new AdventureRegionImpl(region, escapable, eventsWeights);
-		identifiables.put(parsed.getId(), parsed);
+		register(parsed, parsed.getView());
 	}
 
 	@Nullable
@@ -235,7 +240,7 @@ public final class ResourcePackage {
 		}
 
 		AdventureEvent event = new AdventureEventImpl(id, actionsTable);
-		identifiables.put(event.getId(), event);
+		register(event, event.getView());
 		return event;
 	}
 
@@ -279,7 +284,7 @@ public final class ResourcePackage {
 
 
 		AdventureAction action = new AdventureActionImpl(id, hidden, cost, ticket, style, outcomesWeights);
-		identifiables.put(action.getId(), action);
+		register(action);
 		return action;
 	}
 
@@ -298,7 +303,7 @@ public final class ResourcePackage {
 			outcome = new AdventureOutcomeReward(id, moneyMean, moneyStd, "region." + region, items);
 		}
 
-		identifiables.put(outcome.getId(), outcome);
+		register(outcome, outcome.getView());
 
 		return outcome;
 	}
@@ -343,7 +348,7 @@ public final class ResourcePackage {
 			Item item = parseItem(itemName, json);
 			if (item == null)
 				throw new PackageParsingException("IllegalItem; at '" + itemName + "'");
-			identifiables.put(item.getId(), item);
+			register(item);
 		}
 	}
 
@@ -379,7 +384,7 @@ public final class ResourcePackage {
 			ItemCategory category = parseItemCategory(categoryName, json);
 			if (category == null)
 				throw new PackageParsingException("IllegalItemCategory; at '" + categoryName + "'");
-			identifiables.put(category.getId(), category);
+			register(category);
 		}
 	}
 
