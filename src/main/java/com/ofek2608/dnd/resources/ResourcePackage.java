@@ -269,6 +269,8 @@ public final class ResourcePackage {
 				if (!(singleOutcomeJson instanceof Map<?, ?> singleOutcomeJsonMap))
 					return null;
 				outcomes[i] = parseEventOutcome(id + "." + i, inRegion, singleOutcomeJsonMap);
+				//weird warning
+				//noinspection ConstantConditions
 				weights[i] = singleOutcomeJsonMap.get("weight") instanceof Number n ? n.floatValue() : 1;
 			}
 
