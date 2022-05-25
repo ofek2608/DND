@@ -15,4 +15,9 @@ public interface EnemyAttack extends Identifiable {
 	 * @return the attack's healing
 	 */
 	@Nullable Roll getHeal();
+
+	/**
+	 * @return the attack's kind
+	 */
+	@Nullable AttackKind getKind();
 }
