@@ -30,9 +30,10 @@ public class PlayerDataImpl implements PlayerData {
 	@Override
 	public Object saveJson() {
 		Map<String,Object> result = new HashMap<>();
-		result.put("inventory", inventory.saveJson());
-		result.put("backpack" , backpack .saveJson());
-		result.put("health"   , health   .saveJson());
+		result.put("inventory" , inventory .saveJson());
+		result.put("backpack"  , backpack  .saveJson());
+		result.put("health"    , health    .saveJson());
+		result.put("equipments", equipments.saveJson());
 		if (region != null)
 			result.put("region", region);
 		return result;
@@ -41,9 +42,10 @@ public class PlayerDataImpl implements PlayerData {
 	@Override
 	public void loadJson(@Nullable Object json) {
 		Map<?,?> jsonMap = json instanceof Map<?,?> m ? m : Collections.EMPTY_MAP;
-		inventory.loadJson(jsonMap.get("inventory"));
-		backpack .loadJson(jsonMap.get("backpack" ));
-		health   .loadJson(jsonMap.get("health"   ));
+		inventory .loadJson(jsonMap.get("inventory" ));
+		backpack  .loadJson(jsonMap.get("backpack"  ));
+		health    .loadJson(jsonMap.get("health"    ));
+		equipments.loadJson(jsonMap.get("equipments"));
 		region = jsonMap.get("region") instanceof String s ? s : null;
 	}
 
