@@ -9,16 +9,20 @@ public interface PlayerEquipments extends Savable {
 	PlayerEquipmentSlot getLeggings();
 	PlayerEquipmentSlot getBoots();
 	PlayerEquipmentSlot getSword();
+	PlayerEquipmentSlot getWand();
 	PlayerEquipmentSlot getShield();
+	PlayerEquipmentSlot getFood();
 
 	default PlayerEquipmentSlot get(EquipmentSlot slot) {
 		return switch (slot) {
-			case HELMET -> getHelmet();
+			case HELMET     -> getHelmet();
 			case CHESTPLATE -> getChestplate();
-			case LEGGINGS -> getLeggings();
-			case BOOTS -> getBoots();
-			case SWORD -> getSword();
-			case SHIELD -> getShield();
+			case LEGGINGS   -> getLeggings();
+			case BOOTS      -> getBoots();
+			case SWORD      -> getSword();
+			case WAND       -> getWand();
+			case SHIELD     -> getShield();
+			case FOOD       -> getFood();
 		};
 	}
 }

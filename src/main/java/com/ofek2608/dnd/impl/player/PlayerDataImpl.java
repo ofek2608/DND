@@ -2,6 +2,7 @@ package com.ofek2608.dnd.impl.player;
 
 import com.ofek2608.dnd.api.player.Inventory;
 import com.ofek2608.dnd.api.player.PlayerData;
+import com.ofek2608.dnd.api.player.PlayerEquipments;
 import com.ofek2608.dnd.api.player.PlayerHealth;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,6 +15,7 @@ public class PlayerDataImpl implements PlayerData {
 	private final Inventory backpack = new InventoryImpl();
 	private final Inventory bothInventories = new BothInventories(inventory, backpack);
 	private final PlayerHealth health = new PlayerHealthImpl(this);
+	private final PlayerEquipments equipments = new PlayerEquipmentsImpl(inventory);
 	@Nullable private String region;
 
 	@Override
@@ -54,6 +56,11 @@ public class PlayerDataImpl implements PlayerData {
 	@Override
 	public PlayerHealth getHealth() {
 		return health;
+	}
+
+	@Override
+	public PlayerEquipments getEquipment() {
+		return equipments;
 	}
 
 	@Override
