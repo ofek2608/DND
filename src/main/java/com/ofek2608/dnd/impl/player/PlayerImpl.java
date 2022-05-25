@@ -40,7 +40,7 @@ public class PlayerImpl implements Player {
 		this.user = user;
 		this.settings = new PlayerSettingsImpl();
 		this.message = new PlayerMessageImpl(this);
-		this.data = new PlayerDataImpl();
+		this.data = new PlayerDataImpl(this);
 		this.stats = new PlayerStatsImpl();
 	}
 

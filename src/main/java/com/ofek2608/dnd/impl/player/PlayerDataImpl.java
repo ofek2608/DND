@@ -1,6 +1,7 @@
 package com.ofek2608.dnd.impl.player;
 
 import com.ofek2608.dnd.api.player.Inventory;
+import com.ofek2608.dnd.api.player.Player;
 import com.ofek2608.dnd.api.player.PlayerData;
 import com.ofek2608.dnd.api.player.PlayerHealth;
 import org.jetbrains.annotations.Nullable;
@@ -10,11 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerDataImpl implements PlayerData {
-	private final Inventory inventory = new InventoryImpl();
-	private final Inventory backpack = new InventoryImpl();
-	private final Inventory bothInventories = new BothInventories(inventory, backpack);
-	private final PlayerHealth health = new PlayerHealthImpl(this);
+	private final Inventory inventory;
+	private final Inventory backpack;
+	private final Inventory bothInventories;
+	private final PlayerHealth health;
 	@Nullable private String region;
+
+	public PlayerDataImpl(Player player) {
+		this.inventory = new InventoryImpl();
+		this.backpack = new InventoryImpl();
+		this.bothInventories = new BothInventories(inventory, backpack);
+		this.health = new PlayerHealthImpl(player);
+	}
 
 	@Override
 	public Object saveJson() {

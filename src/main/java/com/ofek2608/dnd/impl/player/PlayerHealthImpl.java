@@ -1,6 +1,6 @@
 package com.ofek2608.dnd.impl.player;
 
-import com.ofek2608.dnd.api.player.PlayerData;
+import com.ofek2608.dnd.api.player.Player;
 import com.ofek2608.dnd.api.player.PlayerHealth;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,11 +8,11 @@ import java.util.Collections;
 import java.util.Map;
 
 public class PlayerHealthImpl implements PlayerHealth {
-	private final PlayerData player;
+	private final Player player;
 	private float health;
 	private long lastDeath;
 
-	public PlayerHealthImpl(PlayerData player) {
+	public PlayerHealthImpl(Player player) {
 		this.player = player;
 	}
 
@@ -43,19 +43,22 @@ public class PlayerHealthImpl implements PlayerHealth {
 
 	@Override
 	public void damage(float value) {
+		//value *= 1 - protection;
 		float newHealth = this.health - value;
-		if (newHealth >= 0)
-			health = newHealth;
-		else
+		if (newHealth < 0) {
 			kill();
+			return;
+		}
+		health = newHealth;
+		player.getStats().setLastDamage(value);
 	}
 
 	@Override
 	public void kill() {
 		lastDeath = System.currentTimeMillis();
 		health = 1;
-		player.setRegion(null);
-		player.getBackpack().clear();
+		player.getData().setRegion(null);
+		player.getData().getBackpack().clear();
 	}
 
 	@Override
