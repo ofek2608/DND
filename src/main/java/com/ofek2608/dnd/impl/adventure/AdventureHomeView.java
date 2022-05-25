@@ -1,6 +1,6 @@
 package com.ofek2608.dnd.impl.adventure;
 
-import com.ofek2608.dnd.api.player.PlayerHealth;
+import com.ofek2608.dnd.api.player.PlayerData;
 import com.ofek2608.dnd.api.player.Player;
 import com.ofek2608.dnd.api.player.PlayerView;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -20,17 +20,17 @@ public class AdventureHomeView implements PlayerView {
 
 	@Override
 	public void buildEmbed(Context context, EmbedBuilder builder) {
-		PlayerHealth health = context.player.getData().getHealth();
+		PlayerData data = context.player.getData();
 		builder.appendDescription(context.t(
-				health.isAlive() ?
+				data.isAlive() ?
 						"description.adventure.home.alive" :
 						"description.adventure.home.dead"
-		).replaceAll("%t", "<t:" + health.getReviveTime() / 1000 + ":R>"));
+		).replaceAll("%t", "<t:" + data.getReviveTime() / 1000 + ":R>"));
 	}
 
 	@Override
 	public ActionRow[] createActionRows(Context context) {
-		if (context.player.getData().getHealth().isAlive()) {
+		if (context.player.getData().isAlive()) {
 			return new ActionRow[] {
 					ActionRow.of(
 							Button.secondary("forest", context.t("region.forest")),
@@ -54,7 +54,7 @@ public class AdventureHomeView implements PlayerView {
 			player.openMenu();
 			return;
 		}
-		if (!player.getData().getHealth().isAlive())
+		if (!player.getData().isAlive())
 			return;
 		@Nullable
 		String regionId = switch (id) {

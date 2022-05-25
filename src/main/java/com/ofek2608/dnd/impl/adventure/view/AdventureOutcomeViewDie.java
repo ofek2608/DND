@@ -24,7 +24,7 @@ public class AdventureOutcomeViewDie implements PlayerView {
 		builder.appendDescription(context.t(descriptionKey));
 		builder.appendDescription("\n");
 		builder.appendDescription(context.t("description.adventure.died")
-				.replaceAll("%t", "<t:" + context.player.getData().getHealth().getReviveTime() / 1000 + ":R>"));
+				.replaceAll("%t", "<t:" + context.player.getData().getReviveTime() / 1000 + ":R>"));
 	}
 
 	@Override

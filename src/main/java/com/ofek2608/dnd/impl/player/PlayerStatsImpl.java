@@ -6,12 +6,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public class PlayerStatsImpl implements PlayerStats {
+	private long lastDeath;
 	private long lastIncome;
 	private float lastDamage;
 
 	@Override
 	public Object saveJson() {
 		return Map.of(
+				"lastDeath" , lastDeath ,
 				"lastIncome", lastIncome,
 				"lastDamage", lastDamage
 		);
@@ -21,8 +23,19 @@ public class PlayerStatsImpl implements PlayerStats {
 	public void loadJson(@Nullable Object json) {
 		if (!(json instanceof Map<?,?> jsonMap))
 			return;
-		lastIncome = jsonMap.get("lastIncome") instanceof Number n ? n.longValue() : 0;
+		lastDeath  = jsonMap.get("lastDeath" ) instanceof Number n ? n.longValue()  : 0;
+		lastIncome = jsonMap.get("lastIncome") instanceof Number n ? n.longValue()  : 0;
 		lastDamage = jsonMap.get("lastDamage") instanceof Number n ? n.floatValue() : 0;
+	}
+
+	@Override
+	public void setLastDeath(long lastDeath) {
+		this.lastDeath = lastDeath;
+	}
+
+	@Override
+	public long getLastDeath() {
+		return lastDeath;
 	}
 
 	@Override

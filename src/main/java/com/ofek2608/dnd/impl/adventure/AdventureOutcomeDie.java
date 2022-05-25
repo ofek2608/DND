@@ -23,7 +23,7 @@ public class AdventureOutcomeDie implements AdventureOutcome {
 
 	@Override
 	public void apply(Player player, Random r) {
-		 player.getData().getHealth().kill();
+		 player.getData().kill();
 	}
 
 	@Override

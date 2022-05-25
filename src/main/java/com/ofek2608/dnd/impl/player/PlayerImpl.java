@@ -139,7 +139,7 @@ public class PlayerImpl implements Player {
 
 	@Override
 	public void respawn() {
-		data.getHealth().setHealth(1);
+		data.setHealth(1);
 		data.setRegion(null);
 		data.getBackpack().clear();
 		message.setView(AdventureHomeView.INSTANCE);
