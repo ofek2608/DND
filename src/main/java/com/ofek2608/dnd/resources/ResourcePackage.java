@@ -1,6 +1,7 @@
 package com.ofek2608.dnd.resources;
 
 import com.ofek2608.dnd.api.Cost;
+import com.ofek2608.dnd.api.EquipmentSlot;
 import com.ofek2608.dnd.api.Identifiable;
 import com.ofek2608.dnd.api.adventure.AdventureEvent;
 import com.ofek2608.dnd.api.adventure.AdventureAction;
@@ -361,12 +362,13 @@ public final class ResourcePackage {
 
 		if (!(map.get("category") instanceof String category)) return null;
 		if (!(map.get("icon") instanceof String icon)) return null;
+		EquipmentSlot slot = map.get("slot") instanceof String s ? EquipmentSlot.parse(s) : null;
 		Roll attack = RollImpl.parseString(map.get("attack"));
 		float protection = map.get("protection") instanceof Number n ? n.floatValue() : 0;
 		float heal = map.get("heal") instanceof Number n ? n.floatValue() : 0;
 
 
-		return new ItemImpl(name, "item_category." + category, icon, attack, protection, heal);
+		return new ItemImpl(name, "item_category." + category, icon, slot, attack, protection, heal);
 	}
 
 

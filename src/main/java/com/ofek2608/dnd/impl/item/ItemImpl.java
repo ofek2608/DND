@@ -1,5 +1,6 @@
 package com.ofek2608.dnd.impl.item;
 
+import com.ofek2608.dnd.api.EquipmentSlot;
 import com.ofek2608.dnd.api.item.Item;
 import com.ofek2608.dnd.api.Roll;
 import org.jetbrains.annotations.Nullable;
@@ -9,15 +10,17 @@ public class ItemImpl implements Item {
 	private final String name;
 	private final String category;
 	private final String icon;
+	private final @Nullable EquipmentSlot slot;
 	private final @Nullable Roll attack;
 	private final float protection;
 	private final float heal;
 
-	public ItemImpl(String name, String category, String icon, @Nullable Roll attack, float protection, float heal) {
+	public ItemImpl(String name, String category, String icon, @Nullable EquipmentSlot slot, @Nullable Roll attack, float protection, float heal) {
 		this.id = "item." + name;
 		this.name = name;
 		this.category = category;
 		this.icon = icon;
+		this.slot = slot;
 		this.attack = attack;
 		this.protection = protection;
 		this.heal = heal;
@@ -41,6 +44,12 @@ public class ItemImpl implements Item {
 	@Override
 	public String getIcon() {
 		return icon;
+	}
+
+	@Nullable
+	@Override
+	public EquipmentSlot getSlot() {
+		return slot;
 	}
 
 	@Nullable

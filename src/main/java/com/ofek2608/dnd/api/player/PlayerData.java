@@ -9,6 +9,7 @@ public interface PlayerData extends Savable {
 	Inventory getBackpack();
 	Inventory getBothInventories();
 	PlayerHealth getHealth();
+	PlayerEquipments getEquipment();
 
 	void setRegion(@Nullable String region);
 	@Nullable String getRegion();
