@@ -102,6 +102,7 @@ public final class ResourcePackage {
 	private static void loadLangToMap(String lang, Map<String, Object> langMap, Object json, String prefix)
 			throws PackageParsingException {
 		if (json instanceof List<?> list) {
+			@Nullable
 			Weight<String> weight = parseLangWeights(list);
 			if (weight == null)
 				throw new PackageParsingException("IllegalList; In language '" + lang + "' at '" + prefix + "'");
@@ -192,6 +193,7 @@ public final class ResourcePackage {
 			if (!(eventJson instanceof Map<?,?>))
 				throw new PackageParsingException("IllegalEvent; In region '" + region + "' at '" + eventName + "'");
 
+			@Nullable
 			AdventureEvent event = parseEvent(region, eventName, (Map<?,?>)eventJson);
 			if (event == null)
 				throw new PackageParsingException("IllegalEvent; In region '" + region + "' at '" + eventName + "'");
@@ -229,6 +231,7 @@ public final class ResourcePackage {
 			int colCount = rowJsonList.size();
 			AdventureAction[] rowActions = new AdventureAction[colCount];
 			for (int col = 0; col < colCount; col++) {
+				@Nullable
 				AdventureAction action = parseEventAction(id + "." + index, region, rowJsonList.get(col));
 				index++;
 				if (action == null)
@@ -245,6 +248,7 @@ public final class ResourcePackage {
 		return event;
 	}
 
+	@Nullable
 	private AdventureAction parseEventAction(String id, String inRegion, Object json) {
 		if (!(json instanceof Map<?,?> jsonMap))
 			return null;
@@ -296,6 +300,7 @@ public final class ResourcePackage {
 		float   moneyStd  = json.get("moneyStd") instanceof Number  n ? n.floatValue() : 0.0f;
 		boolean die       = json.get("die"     ) instanceof Boolean b ? b              : false;
 		String  region    = json.get("region"  ) instanceof String  s ? s              : inRegion;
+		@Nullable
 		ItemList items = ItemList.parseItemList(json.get("items"));
 		if (items == null) items = ItemList.EMPTY;
 
@@ -316,6 +321,7 @@ public final class ResourcePackage {
 			return Cost.EMPTY;
 
 		long money = costMap.get("money") instanceof Number n ? Math.max(n.longValue(),0) : 0;
+		@Nullable
 		ItemList items = ItemList.parseItemList(costMap.get("items"));
 
 		if (items == null)
@@ -348,6 +354,7 @@ public final class ResourcePackage {
 			if (dot >= 0)
 				itemName = itemName.substring(0, dot);
 
+			@Nullable
 			Item item = parseItem(itemName, json);
 			if (item == null)
 				throw new PackageParsingException("IllegalItem; at '" + itemName + "'");
@@ -362,7 +369,9 @@ public final class ResourcePackage {
 
 		if (!(map.get("category") instanceof String category)) return null;
 		if (!(map.get("icon") instanceof String icon)) return null;
+		@Nullable
 		EquipmentSlot slot = map.get("slot") instanceof String s ? EquipmentSlot.parse(s) : null;
+		@Nullable
 		Roll attack = RollImpl.parseString(map.get("attack"));
 		float protection = map.get("protection") instanceof Number n ? n.floatValue() : 0;
 		float heal = map.get("heal") instanceof Number n ? n.floatValue() : 0;
@@ -386,6 +395,7 @@ public final class ResourcePackage {
 			if (dot >= 0)
 				categoryName = categoryName.substring(0, dot);
 
+			@Nullable
 			ItemCategory category = parseItemCategory(categoryName, json);
 			if (category == null)
 				throw new PackageParsingException("IllegalItemCategory; at '" + categoryName + "'");

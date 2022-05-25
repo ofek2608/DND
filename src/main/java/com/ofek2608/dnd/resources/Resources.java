@@ -5,6 +5,7 @@ import com.ofek2608.dnd.api.Lang;
 import com.ofek2608.dnd.api.player.PlayerView;
 import com.ofek2608.dnd.impl.LangImpl;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ public final class Resources {
 	private Resources() {}
 	private static final Map<String, Identifiable> IDENTIFIABLES = new HashMap<>();
 
+	@Nullable
 	public static Identifiable get(String id) {
 		return IDENTIFIABLES.get(id);
 	}
