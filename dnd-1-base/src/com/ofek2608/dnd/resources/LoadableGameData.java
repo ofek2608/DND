@@ -3,6 +3,7 @@ package com.ofek2608.dnd.resources;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nullable;
+import java.lang.annotation.*;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -91,4 +92,11 @@ public abstract class LoadableGameData extends GameData {
 		return str == null ? null : str + suffix;
 	}
 
+	@Documented
+	@Target(ElementType.FIELD)
+	@Retention(RetentionPolicy.RUNTIME)
+	protected @interface Res {
+		String name() default "";
+		Class<?> mapKind() default Object.class;
+	}
 }

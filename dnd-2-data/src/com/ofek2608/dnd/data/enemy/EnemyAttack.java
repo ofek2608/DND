@@ -1,6 +1,5 @@
 package com.ofek2608.dnd.data.enemy;
 
-import com.ofek2608.dnd.resources.Res;
 import com.ofek2608.dnd.resources.LoadableGameData;
 import com.ofek2608.dnd.resources.LoadContext;
 import com.ofek2608.dnd.utils.Roll;

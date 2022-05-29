@@ -3,7 +3,6 @@ package com.ofek2608.dnd.data.pet;
 import com.ofek2608.dnd.funcs.WeightsParser;
 import com.ofek2608.dnd.resources.LoadContext;
 import com.ofek2608.dnd.resources.LoadableGameData;
-import com.ofek2608.dnd.resources.Res;
 import com.ofek2608.utils.Weights;
 
 import java.util.Objects;

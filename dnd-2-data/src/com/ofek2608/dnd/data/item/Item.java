@@ -1,7 +1,6 @@
 package com.ofek2608.dnd.data.item;
 
 import com.ofek2608.dnd.utils.Roll;
-import com.ofek2608.dnd.resources.Res;
 import com.ofek2608.dnd.resources.LoadableGameData;
 import com.ofek2608.dnd.resources.LoadContext;
 import org.jetbrains.annotations.Nullable;

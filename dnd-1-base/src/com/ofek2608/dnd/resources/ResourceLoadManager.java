@@ -73,7 +73,7 @@ final class ResourceLoadManager {
 
 		if (result == null) {
 			Field[] thisClass = Stream.of(clazz.getDeclaredFields())
-					.filter(f -> f.getAnnotation(Res.class) != null)
+					.filter(f -> f.getAnnotation(LoadableGameData.Res.class) != null)
 					.peek(f -> {
 						f.setAccessible(true);
 						ReflectionUtils.setNonFinal(f);

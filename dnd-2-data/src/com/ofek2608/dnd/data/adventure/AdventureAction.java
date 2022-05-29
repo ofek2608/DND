@@ -2,7 +2,6 @@ package com.ofek2608.dnd.data.adventure;
 
 import com.ofek2608.dnd.resources.LoadContext;
 import com.ofek2608.dnd.resources.LoadableGameData;
-import com.ofek2608.dnd.resources.Res;
 import com.ofek2608.dnd.utils.Cost;
 import com.ofek2608.utils.Weights;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
