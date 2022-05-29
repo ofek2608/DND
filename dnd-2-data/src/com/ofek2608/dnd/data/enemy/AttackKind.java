@@ -1,4 +1,4 @@
-package com.ofek2608.dnd.data.item.enemy;
+package com.ofek2608.dnd.data.enemy;
 
 public enum AttackKind {
 	HEAD { public float getProtection(float h, float c, float l, float b) { return h; } },
