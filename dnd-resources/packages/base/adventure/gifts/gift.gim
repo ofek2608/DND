@@ -1,0 +1,45 @@
+{
+	actions: [[
+		{
+			style: "primary"
+			outcomes: [{items: [1, "amethyst"]}]
+		},
+		{
+			style: "primary"
+			outcomes: [{items: [1, "ruby"]}]
+		},
+		{
+			style: "primary"
+			outcomes: [{items: [1, "sapphire"]}]
+		},
+		{
+			style: "primary"
+			outcomes: [{items: [1, "topaz"]}]
+		},
+		{
+			style: "primary"
+			outcomes: [{items: [1, "emerald"]}]
+		}
+	], [
+		{
+			style: "primary"
+			outcomes: [{items: [1, "steak"]}]
+		},
+		{
+			style: "primary"
+			outcomes: [{items: [1, "bacon"]}]
+		},
+		{
+			style: "primary"
+			outcomes: [{items: [1, "omelette"]}]
+		},
+		{
+			style: "primary"
+			outcomes: [{items: [1, "chicken"]}]
+		},
+		{
+			style: "primary"
+			outcomes: [{items: [1, "pizza"]}]
+		}
+	]]
+}

@@ -1,0 +1,13 @@
+{
+	weight: 1,
+	actions: [[
+		{
+			style: "danger",
+			outcomes: [{money: 100000},{die: true}]
+		},
+		{
+			style: "secondary",
+			outcomes: [{""}]
+		}
+	]]
+}

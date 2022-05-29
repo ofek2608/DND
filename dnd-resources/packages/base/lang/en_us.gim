@@ -1,0 +1,159 @@
+{
+  "English"
+
+  region: {
+        forest: "Forest"
+        temple: "Temple"
+        gifts: "Gifts"
+  }
+
+  description: {
+    menu: "This is the main menu!!"
+    inventory.empty: "Your inventory is empty, start adventuring to get items."
+
+    adventure: {
+      home: {
+        alive: "You are at your home, Where do you want to start adventuring?"
+        dead: "You are dead, you will revive %t."
+      }
+      died: "You will revive %t."
+      validate_respawn: {
+        "[**WARNING**](https://www.google.com)\nYou will lose all items and money you have earned since your last checkpoint.\nAre you still sure you want to respawn?\n\n[You will lose:](https://www.google.com)"
+        nothing: "\nNothing"
+        money: "\nMoney: *%c*"
+        item: "\n%n: *%c*"
+        more: "\n*And %c more*"
+      }
+    }
+    adventure: {
+      forest: {
+        "You are stepping in the forest"
+        deer: {
+          "You see a deer, what do you want to do?"
+          actions: [[
+            {
+              outcomes: [
+                "You hunt the deer, and earned %m. :grin:",
+                "You lost the deer",
+                "The deer wasn't happy, he killed you"
+              ]
+            }
+            {outcomes: [[4, "The deer run away", 1, "Why no?", 1, "That could have been really fun :(", 1, "Bro..."]]}
+            {outcomes: ["And they lived happily."]}
+            {outcomes: ["Why have i done that as an option?!"]}
+          ]]
+        }
+        temple_entrance: {
+          "You came across a temple, and you see the entrance, do you want to enter?"
+          actions: [[
+            {outcomes: ["You went into the temple, and the door shut behind your back, oops..."]}
+            {outcomes: ["You skipped the temple."]}
+          ]]
+        }
+      }
+      temple: {
+        "You are in the temple, trying to find the way out."
+        trap: {
+          "You see a statue, it looks expensive, but maybe it's a trap."
+          actions: [[
+            {
+              outcomes: [
+                "LOL, it wasn't a trap, you earned %m."
+                "It was a trap :flushed:! you died :("
+              ]
+            }
+            {outcomes: ["Let just find the exit as fast as possible"]}
+          ]]
+        }
+        escape: {
+          "You found the way out, do you want to leave now?"
+          actions: [[
+            {outcomes: ["You left the temple, now you are back in the forest."]}
+            {outcomes: ["You are staying in the temple."]}
+          ]]
+        }
+      }
+    }
+  }
+  button: {
+    continue: "Continue"
+    cancel: "Cancel"
+    menu.go_adventure: "Go Adventure"
+    menu.inventory: "Open Inventory"
+    menu.pets: "Pets"
+    return_home: "Return Home"
+    respawn: "Respawn"
+    menu: "Menu"
+    back_to_menu: "Back To Menu"
+    pet.overview: "Overview"
+    pet.trap: ":mouse_trap: Trap"
+    pet.trap.waiting: "waiting for an animal to get trapped"
+    pet.trap.trapped: "caught %p"
+    pet.empty: "Empty"
+    pet.discard: "Discard"
+    pet.trap.open: "Open"
+    pet.command: {
+      guard: "Guardian"
+      assist: "Assistant"
+      hunt: "Hunter"
+      retire: "Retire"
+    }
+    pet.feed: "Feed"
+
+    adventure: {
+      forest: {
+        deer: {
+          actions: [[
+            [10, "Hunt him", 1, "HUNT HIM", 1, "DESTROY HIM"]
+            "Leave him alone"
+            "Breed him"
+            "Triple!"
+          ]]
+        }
+        temple_entrance: {
+          actions: [[
+            [3, "Yes", 1, "Oh yea", 1, "Let's do it", 1, "Why not?"]
+            [3, "No", 1, "I am too scared", 1, "Nah", 1, "Why should I?"]
+          ]]
+        }
+      }
+      temple: {
+	      trap: {
+	        actions: [[
+		      "Take"
+		      "Leave"
+		    ]]
+	      }
+	      escape: {
+	        actions: [[
+		      "Leave"
+		      "Stay"
+		    ]]
+	      }
+      }
+    }
+  }
+  private_message {
+    capture.title: "Boom!"
+    capture.description: "You just captured a *%p*, go take it before he will escape."
+    escape.title: "Whoopsie"
+    escape.description: "The *%p* have escaped."
+    hunted.title: "YAY"
+    hunted.description: "Your *%p* just hunt *%i* for you."
+  }
+
+  item: {
+    bacon: ":bacon: Bacon"
+    chicken: ":poultry_leg: Chicken"
+    pizza: ":pizza: Pizza"
+    omelette: ":cooking: Omelette"
+    steak: ":cut_of_meat: Steak"
+    emerald: ":green_circle: Emerald"
+    amethyst: ":purple_circle: Amethyst"
+    sapphire: ":blue_circle: Sapphire"
+    ruby: ":red_circle: Ruby"
+    topaz: ":orange_circle: Topaz"
+    deer: ":deer: Deer"
+    wooden_sword: ":french_bread: Wooden Sword"
+  }
+}
