@@ -1,2 +1,8 @@
-rootProject.name = 'DiscordDND'
+rootProject.name = 'dnd'
+
+include 'dnd-0-utils'
+include 'dnd-1-base'
+include 'dnd-2-data'
+include 'dnd-3-api'
+include 'dnd-4-impl'
 

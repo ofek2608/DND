@@ -2,25 +2,110 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
+subprojects {
+    apply plugin: 'java'
+
+    buildDir = '../build/' + project.name
+
+    sourceSets {
+        main.java.srcDirs = ['src']
+        //src.resources.srcDirs = []
+        //main.java.srcDirs = []
+        main.resources.srcDirs = []
+        test.java.srcDirs = []
+        test.resources.srcDirs = []
+    }
 }
+
+buildDir = 'build/dnd'
+
+
+
+allprojects {
+
+    group 'com.ofek2608'
+    version '1.0'
+
+    java.sourceCompatibility(JavaVersion.VERSION_17)
+    java.targetCompatibility(JavaVersion.VERSION_17)
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+        // jsr305
+        implementation 'com.google.code.findbugs:jsr305:3.0.2'
+        // JDA
+        implementation("net.dv8tion:JDA:5.0.0-alpha.9")
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding 'UTF-8'
+    }
+}
+
+
+
+
+
+
+
+
+
+
+project('dnd-0-utils') {
+
+}
+
+project('dnd-1-base') {
+    dependencies {
+        implementation project(':dnd-0-utils')
+    }
+}
+
+project('dnd-2-data') {
+    dependencies {
+        implementation project(':dnd-0-utils')
+        implementation project(':dnd-1-base')
+    }
+}
+
+project('dnd-3-api') {
+    dependencies {
+        implementation project(':dnd-0-utils')
+        implementation project(':dnd-1-base')
+        implementation project(':dnd-2-data')
+    }
+}
+
+project('dnd-4-impl') {
+    dependencies {
+        implementation project(':dnd-0-utils')
+        implementation project(':dnd-1-base')
+        implementation project(':dnd-2-data')
+        implementation project(':dnd-3-api')
+    }
+
+    sourceSets {
+        main.resources.srcDirs = ["../dnd-resources"]
+    }
+}
+
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    //JDA
-    implementation("net.dv8tion:JDA:5.0.0-alpha.9")
-    //Json simple
-    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    implementation project(':dnd-0-utils')
+    implementation project(':dnd-1-base')
+    implementation project(':dnd-2-data')
+    implementation project(':dnd-3-api')
+    implementation project(':dnd-4-impl')
 }
 
-test {
-    useJUnitPlatform()
-}
-
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
